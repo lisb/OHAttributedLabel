@@ -57,7 +57,6 @@ const int UITextAlignmentJustify = ((UITextAlignment)kCTJustifiedTextAlignment);
     NSAttributedString* _attributedTextWithLinks;
     BOOL _needsRecomputeLinksInText;
     NSDataDetector* _linksDetector;
-	CTFrameRef textFrame;
 	CGRect drawingRect;
 	NSMutableArray* _customLinks;
 	CGPoint _touchStartPoint;

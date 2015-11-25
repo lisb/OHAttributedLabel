@@ -9,7 +9,8 @@
 #import "OHParagraphStyle.h"
 
 @implementation OHParagraphStyle
-@synthesize lineSpacing = _lineSpacing;
+@synthesize minimumLineSpacing = _minimumLineSpacing;
+@synthesize maximumLineSpacing = _maximumLineSpacing;
 @synthesize paragraphSpacing = _paragraphSpacing;
 @synthesize textAlignment = _textAlignment;
 @synthesize lineBreakMode = _lineBreakMode;
@@ -45,8 +46,8 @@
     if (self)
     {
         CTParagraphStyleRef paragraphStyle = style ?: CTParagraphStyleCreate(NULL, 0);
-        CTParagraphStyleGetValueForSpecifier(paragraphStyle, kCTParagraphStyleSpecifierMinimumLineSpacing,sizeof(_lineSpacing), &_lineSpacing);
-        CTParagraphStyleGetValueForSpecifier(paragraphStyle, kCTParagraphStyleSpecifierMaximumLineSpacing,sizeof(_lineSpacing), &_lineSpacing);
+        CTParagraphStyleGetValueForSpecifier(paragraphStyle, kCTParagraphStyleSpecifierMinimumLineSpacing,sizeof(_minimumLineSpacing), &_minimumLineSpacing);
+        CTParagraphStyleGetValueForSpecifier(paragraphStyle, kCTParagraphStyleSpecifierMaximumLineSpacing,sizeof(_maximumLineSpacing), &_maximumLineSpacing);
         CTParagraphStyleGetValueForSpecifier(paragraphStyle, kCTParagraphStyleSpecifierParagraphSpacing, sizeof(_paragraphSpacing), &_paragraphSpacing);
         CTParagraphStyleGetValueForSpecifier(paragraphStyle, kCTParagraphStyleSpecifierAlignment,sizeof(_textAlignment), &_textAlignment);
         CTParagraphStyleGetValueForSpecifier(paragraphStyle, kCTParagraphStyleSpecifierLineBreakMode, sizeof(_lineBreakMode), &_lineBreakMode);
@@ -70,8 +71,8 @@
     const int kSettingsCount = 13;
     CTParagraphStyleSetting settings[kSettingsCount] =
     {
-        { kCTParagraphStyleSpecifierMinimumLineSpacing, sizeof(_lineSpacing), &_lineSpacing },
-        { kCTParagraphStyleSpecifierMaximumLineSpacing, sizeof(_lineSpacing), &_lineSpacing },
+        { kCTParagraphStyleSpecifierMinimumLineSpacing, sizeof(_minimumLineSpacing), &_minimumLineSpacing },
+        { kCTParagraphStyleSpecifierMaximumLineSpacing, sizeof(_maximumLineSpacing), &_maximumLineSpacing },
         { kCTParagraphStyleSpecifierParagraphSpacing, sizeof(_paragraphSpacing), &_paragraphSpacing },
         { kCTParagraphStyleSpecifierAlignment, sizeof(_textAlignment), &_textAlignment },
         { kCTParagraphStyleSpecifierLineBreakMode, sizeof(_lineBreakMode), &_lineBreakMode },
@@ -96,7 +97,8 @@
 {
 	OHParagraphStyle* copy = [[OHParagraphStyle allocWithZone:zone] init];
 
-    copy.lineSpacing = self.lineSpacing;
+    copy.minimumLineSpacing = self.minimumLineSpacing;
+    copy.maximumLineSpacing = self.maximumLineSpacing;
 	copy.paragraphSpacing = self.paragraphSpacing;
     copy.textAlignment = self.textAlignment;
     copy.headIndent = self.headIndent;

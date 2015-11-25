@@ -14,7 +14,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /* "Leading": distance between the bottom of one line fragment and top of next */
-@property (nonatomic, assign) CGFloat lineSpacing;
+@property (nonatomic, assign) CGFloat minimumLineSpacing;
+@property (nonatomic, assign) CGFloat maximumLineSpacing;
 
 /* Distance between the bottom of this paragraph and top of next (or the beginning of its paragraphSpacingBefore, if any) */
 @property (nonatomic, assign) CGFloat paragraphSpacing;
