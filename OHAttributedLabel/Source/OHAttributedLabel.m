@@ -573,6 +573,14 @@ NSDataDetector* sharedReusableDataDetector(NSTextCheckingTypes types)
                 CFRelease(framesetter);
             }
             
+            // draw highlights for NSBackgroundColorAttributeName
+            [attributedStringToDisplay enumerateAttribute:NSBackgroundColorAttributeName
+                                                  inRange:NSMakeRange(0, attributedStringToDisplay.length)
+                                                  options:0
+                                               usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
+                [self drawBackgroundColor:value forRect:drawingRect range:range];
+            }];
+            
             // draw highlights for activeLink
             if (_activeLink)
             {
@@ -590,7 +598,12 @@ NSDataDetector* sharedReusableDataDetector(NSTextCheckingTypes types)
 
 -(void)drawActiveLinkHighlightForRect:(CGRect)rect
 {
-    if (!self.highlightedLinkColor)
+    [self drawBackgroundColor:self.highlightedLinkColor forRect:rect range:self.activeLink.range];
+}
+
+-(void)drawBackgroundColor:(UIColor*)backgroundColor forRect:(CGRect)rect range:(NSRange)drawRange
+{
+    if (!backgroundColor)
     {
         return;
     }
@@ -598,9 +611,7 @@ NSDataDetector* sharedReusableDataDetector(NSTextCheckingTypes types)
 	CGContextRef ctx = UIGraphicsGetCurrentContext();
 	CGContextSaveGState(ctx);
 	CGContextConcatCTM(ctx, CGAffineTransformMakeTranslation(rect.origin.x, rect.origin.y));
-	[self.highlightedLinkColor setFill];
-	
-	NSRange activeLinkRange = _activeLink.range;
+	[backgroundColor setFill];
 	
 	CFArrayRef lines = CTFrameGetLines(textFrame);
 	CFIndex lineCount = CFArrayGetCount(lines);
@@ -610,7 +621,7 @@ NSDataDetector* sharedReusableDataDetector(NSTextCheckingTypes types)
     {
 		CTLineRef line = CFArrayGetValueAtIndex(lines, lineIndex);
 		
-		if (!CTLineContainsCharactersFromStringRange(line, activeLinkRange))
+		if (!CTLineContainsCharactersFromStringRange(line, drawRange))
         {
 			continue; // with next line
 		}
@@ -624,7 +635,7 @@ NSDataDetector* sharedReusableDataDetector(NSTextCheckingTypes types)
         {
 			CTRunRef run = CFArrayGetValueAtIndex(runs, runIndex);
 			
-			if (!CTRunContainsCharactersFromStringRange(run, activeLinkRange))
+			if (!CTRunContainsCharactersFromStringRange(run, drawRange))
             {
 				if (!CGRectIsEmpty(unionRect))
                 {
@@ -636,8 +647,8 @@ NSDataDetector* sharedReusableDataDetector(NSTextCheckingTypes types)
             
             CFRange fullRunRange = CTRunGetStringRange(run);
 
-            CFIndex startActiveLinkInRun = (CFIndex)activeLinkRange.location - fullRunRange.location;
-            CFIndex endActiveLinkInRun = startActiveLinkInRun + (CFIndex)activeLinkRange.length;
+            CFIndex startActiveLinkInRun = (CFIndex)drawRange.location - fullRunRange.location;
+            CFIndex endActiveLinkInRun = startActiveLinkInRun + (CFIndex)drawRange.length;
             
             CFRange inRunRange;
             inRunRange.location = MAX(startActiveLinkInRun, 0);

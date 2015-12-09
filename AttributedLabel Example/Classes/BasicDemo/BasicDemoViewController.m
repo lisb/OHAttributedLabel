@@ -102,7 +102,9 @@
     // and the color and font of the "post your food" text
     [attrStr setTextColor:[UIColor colorWithRed:0.0 green:0.7 blue:0.0 alpha:1.0] range:NSMakeRange(63,15)];
     [attrStr setFontFamily:@"helvetica" size:18 bold:YES italic:YES range:NSMakeRange(63,15)];
-	
+	// and the background color of the "shoud" word
+    [attrStr addAttribute:NSBackgroundColorAttributeName value:[UIColor yellowColor] range:NSMakeRange(81, 6)];
+    
 	/**(2)** Affect the NSAttributedString to the OHAttributedLabel *******/
 	self.demoLabel.attributedText = attrStr;
 	// "Hello World!" will be displayed in the label, justified, "Hello" in red and " World!" in gray.
