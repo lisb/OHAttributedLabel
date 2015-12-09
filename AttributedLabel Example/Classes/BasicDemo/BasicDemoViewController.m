@@ -94,7 +94,8 @@
         paragraphStyle.textAlignment = kCTCenterTextAlignment;
         paragraphStyle.lineBreakMode = kCTLineBreakByWordWrapping;
         paragraphStyle.paragraphSpacing = 8.f;
-        paragraphStyle.lineSpacing = 3.f;
+        paragraphStyle.minimumLineSpacing = 3.f;
+        paragraphStyle.maximumLineSpacing = 3.f;
     }];
 	// and only change the color of the "Visit" word
 	[attrStr setTextColor:[UIColor redColor] range:NSMakeRange(26,5)];

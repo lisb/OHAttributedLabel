@@ -165,7 +165,8 @@
 {
     NSMutableAttributedString* mas = [self.mentionDemoLabel.attributedText mutableCopy];
     [mas modifyParagraphStylesWithBlock:^(OHParagraphStyle *paragraphStyle) {
-        paragraphStyle.lineSpacing = slider.value;
+        paragraphStyle.minimumLineSpacing = slider.value;
+        paragraphStyle.maximumLineSpacing = slider.value;
     }];
     self.mentionDemoLabel.attributedText = mas;
 #if ! __has_feature(objc_arc)
