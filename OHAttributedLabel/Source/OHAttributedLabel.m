@@ -574,12 +574,17 @@ NSDataDetector* sharedReusableDataDetector(NSTextCheckingTypes types)
             }
             
             // draw highlights for NSBackgroundColorAttributeName
-            [attributedStringToDisplay enumerateAttribute:NSBackgroundColorAttributeName
-                                                  inRange:NSMakeRange(0, attributedStringToDisplay.length)
-                                                  options:0
-                                               usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
-                [self drawBackgroundColor:value forRect:drawingRect range:range];
-            }];
+            if (@available(iOS 10.0, *)) {
+                // In iOS 10+ NSBackgroundColorAttributeName is drawn by iOS
+            } else {
+                // In old iOS, it needs
+                [attributedStringToDisplay enumerateAttribute:NSBackgroundColorAttributeName
+                                                      inRange:NSMakeRange(0, attributedStringToDisplay.length)
+                                                      options:0
+                                                   usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
+                    [self drawBackgroundColor:value forRect:drawingRect range:range];
+                }];
+            }
             
             // draw highlights for activeLink
             if (_activeLink)
